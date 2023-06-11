@@ -6,11 +6,15 @@ import cv2
 import base64
 import logging
 
+logging.info('import done')
+
 app = Potassium("my_app")
 
 # @app.init runs at startup, and loads models into the app's context
 @app.init
 def init():
+    logging.info('init')
+
     # device = 0 if torch.cuda.is_available() else -1
     # model = pipeline('fill-mask', model='bert-base-uncased', device=device)
    
