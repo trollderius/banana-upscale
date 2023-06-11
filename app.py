@@ -4,6 +4,7 @@ from transformers import pipeline
 import torch
 import cv2
 import base64
+import logging
 
 app = Potassium("my_app")
 
@@ -22,6 +23,8 @@ def init():
 # @app.handler runs for every call
 @app.handler()
 def handler(context: dict, request: Request) -> Response:
+    logging.info('handler')
+
     # prompt = request.json.get("prompt")
     # model = context.get("model")
     # outputs = model(prompt)
@@ -29,7 +32,9 @@ def handler(context: dict, request: Request) -> Response:
     image_data = request.get('image_data', None)
     image = Image.open(BytesIO(base64.b64decode(image_data))).convert("RGB") 
 
+    logging.info('subprocess.run')
     subprocess.run("./upscayl-realesrgan -i output-0.png -o output.jpeg -s 2 -m models -n ultramix_balanced -f jpeg")
+    logging.info('subprocess.run done')
 
     img = cv2.imread('output.jpeg')
     jpg_img = cv2.imencode('.jpeg', img)
